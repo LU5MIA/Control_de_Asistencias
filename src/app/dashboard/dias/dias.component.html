@@ -1,0 +1,56 @@
+<h5 class="mb-4 ms-2">
+  Listado de Dias
+</h5>
+
+<div class="bg-custom d-flex align-items-center">
+  <div class="input-group input-group-sm ms-auto input-container">
+    <input type="text"
+          class="form-control border-end-0 input-busqueda"
+          style="border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;"
+          placeholder="Ingrese un dia"
+          [(ngModel)]="filtro"
+          name="filtro">
+
+    <span class="input-group-text bg-white border-start-0 me-2"
+          style="border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;">
+      <i class="bi bi-search"></i>
+    </span>
+  </div>
+</div>
+
+<table class="table table-borderless text-center mt-5" style="color: #8a8a8a;">
+  <thead class="table">
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Estado</th>
+      <th>Opciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let dia of diasFiltrados; let i = index" class="fila-alta">
+      <td>{{ i + 1 }}</td>
+      <td>{{ dia.nombre }}</td>
+      <td>
+        <span [class]="dia.estado ? 'badge bg-custom2 p-2 rounded-4' : 'badge bg-custom3 p-2 rounded-4'" style="width: 100px;">
+          {{ dia.estado ? 'Activo' : 'Inactivo' }}
+        </span>
+      </td>
+      <td>
+
+        <button *ngIf="!dia.estado" class="btn btn-sm rounded-4 bg-custom5 me-2" (click)="activarDia(dia)">
+          <i class="bi bi-check2"></i>
+        </button>
+
+        <button *ngIf="dia.estado" class="btn btn-sm rounded-4 btn-danger" (click)="desactivarDia(dia)">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </td>
+    </tr>
+    <tr *ngIf="diasFiltrados.length === 0">
+      <td colspan="4" class="text-center text-muted">
+        No se encontraron dias con ese nombre.
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,139 @@
+<h5 class="mb-4 ms-2">
+  Listado de Horarios
+</h5>
+
+<div class="bg-custom d-flex align-items-center">
+  <button class="btn p-0 border-0 bg-transparent btn-mas" (click)="abrirFormularioAgregar()">
+    <i class="bi bi-plus-circle-fill text-white fs-4"></i>
+  </button>
+  <div class="input-group input-group-sm ms-auto input-container">
+    <input type="text"
+          class="form-control border-end-0 input-busqueda"
+          style="border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;"
+          placeholder="Ingrese un turno"
+          [(ngModel)]="filtro"
+          name="filtro">
+
+    <span class="input-group-text bg-white border-start-0 me-2"
+          style="border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;">
+      <i class="bi bi-search"></i>
+    </span>
+  </div>
+</div>
+
+<div *ngIf="mostrarForm" class="modal-simulacion">
+  <div class="modal-simulacion-content">
+    <h5 class="mb-3 text-center rounded-4 border p-2" style="border-radius: 12px;">
+      <i 
+        class="me-2" 
+        [ngClass]="editando ? 'bi bi-pencil-square' : 'bi bi-calendar-plus'">
+      </i>
+      {{ editando ? 'Editar Horario' : 'Agregar Horario' }}
+    </h5>
+
+    <form (ngSubmit)="editando ? actualizar() : add()" #formHorario="ngForm"> 
+      <div class="row">
+        
+        <div class="col-md-6 mb-3">
+          <label for="turno" class="form-label">Turno:</label>
+          <select id="turno" name="turno" class="form-select" [(ngModel)]="horario.turno" required>
+            <option value="">Seleccione</option>
+            <option value="Mañana">Mañana</option>
+            <option value="Tarde">Tarde</option>
+            <option value="Noche">Noche</option>
+          </select>
+        </div>
+
+        
+        <div class="col-md-6 mb-3">
+          <label for="modalidad" class="form-label">Modalidad:</label>
+          <select id="modalidad" name="modalidad" class="form-select" [(ngModel)]="horario.modalidad" required>
+            <option value="">Seleccione</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Virtual">Virtual</option>
+          </select>
+        </div>
+
+        
+        <div class="col-md-6 mb-3">
+          <label for="horaEntrada" class="form-label">Hora Entrada:</label>
+          <input type="time" class="form-control" id="horaEntrada" name="horaEntrada" [(ngModel)]="horario.hora_entrada" required>
+        </div>
+
+        
+        <div class="col-md-6 mb-3">
+          <label for="horaSalida" class="form-label">Hora Salida:</label>
+          <input type="time" class="form-control" id="horaSalida" name="horaSalida" [(ngModel)]="horario.hora_salida" required>
+        </div>
+ 
+        
+        <div class="col-12 mb-4">
+          <label for="tolerancia" class="form-label">Tolerancia (min):</label>
+          <input type="number" class="form-control" id="tolerancia" name="tolerancia" [(ngModel)]="horario.tolerancia" min="0" required>
+        </div>
+      </div>
+
+      
+      <div class="text-center mt-3">
+        <button type="button" class="btn btn-danger rounded-4" style="width: 130px;" (click)="cerrarFormulario()">
+          <i class="bi bi-x-circle"></i> Cancelar
+        </button>
+        <button type="submit" class="btn btn-warning rounded-4 text-white ms-3" style="width: 130px;" [disabled]="formHorario.invalid">
+          <i class="bi bi-save"></i> Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<table class="table table-borderless text-center mt-5" style="color: #8a8a8a;">
+  <thead class="table">
+    <tr>
+      <th>#</th>
+      <th>Turno</th>
+      <th>Modalidad</th>
+      <th>Hora_Entrada</th>
+      <th>Tolerancia</th>
+      <th>Hora_Salida</th>
+      <th>Estado</th>
+      <th>Opciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let horario of horariosFiltrados; let i = index" class="fila-alta">
+      <td>{{ i + 1 }}</td>
+      <td>{{ horario.turno }}</td>
+      <td>{{ horario.modalidad }}</td>
+      <td>{{ horario.hora_entrada }}</td>
+      <td>{{ horario.tolerancia }}</td>
+      <td>{{ horario.hora_salida }}</td>
+      <td>
+        <span [class]="horario.estado ? 'badge bg-custom2 p-2 rounded-4' : 'badge bg-custom3 p-2 rounded-4'" style="width: 100px;">
+          {{ horario.estado ? 'Activo' : 'Inactivo' }}
+        </span>
+      </td>
+      <td>
+        <!--Editar Horario-->
+        <button class="btn btn-sm btn-warning rounded-4 me-2" (click)="editarhorario(horario)">
+          <i class="bi bi-pencil"></i>
+        </button>
+
+        <button *ngIf="!horario.estado" class="btn btn-sm rounded-4 bg-custom5 me-2" (click)="activarHorario(horario)">
+          <i class="bi bi-check2"></i>
+        </button>
+
+        <button *ngIf="horario.estado" class="btn btn-sm rounded-4 btn-danger" (click)="desactivarHorario(horario)">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </td>
+    </tr>
+    <tr *ngIf="horariosFiltrados.length === 0">
+      <td colspan="8" class="text-center text-muted">
+        No se encontraron horarios con ese turno.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+

@@ -1,0 +1,114 @@
+h5 {
+    color: #8a8a8a;
+    font-size: 18px;
+}
+
+.bg-custom {
+    background-color: #329190;
+    border-radius: 20rem;
+    padding: 0.5rem;
+    width: 5rem;
+    border: none;
+}
+
+.bg-custom2 {
+    background-color: #e5e5e5;
+    border: none;
+    outline: none;
+    box-shadow: none;
+
+}
+
+.bg-custom3 {
+    background-color: #329190;
+    font-size: 14px;
+    border-radius: 5rem;
+    padding: 0.5rem;
+    width: 20rem;
+    border: none;
+}
+
+.bg-custom4 {
+    background-color: #00bf63;
+    color: white;
+    outline: none;
+    box-shadow: none;
+}
+
+.bg-custom5 {
+    background-color: #21b524;
+    color: white;
+}
+
+.bg-custom input {
+    border-radius: 20rem;
+    width: 230px;
+    outline: none;
+    box-shadow: none;
+}
+
+.bg-custom .btn-mas {
+    outline: none;
+    box-shadow: none;
+}
+
+.bg-custom button {
+    margin-left: 1rem;
+    border: none;
+}
+
+.modal-simulacion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* fondo oscuro semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    /* encima del resto */
+}
+
+.modal-simulacion-content {
+    background-color: #fff;
+    color: #8a8a8a;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+}
+
+.input-group {
+    width: 300px;
+}
+
+.form-control {
+    border-radius: 1.5rem;
+    color: #8a8a8a;
+}
+
+label {
+    font-size: 15px;
+    color: #8a8a8a;
+}
+
+input{
+    border: none;
+    font-size: 15px;
+    padding: 0.2rem;
+    border-radius: 2rem;
+    color: #8a8a8a;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+.fila-alta td {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    vertical-align: middle;
+}

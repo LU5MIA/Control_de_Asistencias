@@ -1,0 +1,50 @@
+h5 {
+  color: #8a8a8a;
+  font-size: 18px;
+}
+
+.bg-custom {
+  background-color: #329190;
+  border-top-left-radius: 20rem;
+  border-bottom-left-radius: 20rem;
+  display: flex;
+  padding: 0.8rem;
+  align-items: center;
+}
+
+.bg-custom2 {
+  background-color: #329190;
+}
+
+.bg-custom3 {
+  background-color: #fbb03b;
+}
+
+.bg-custom4 {
+  background-color: #00bf63;
+  color: white;
+  outline: none;
+  box-shadow: none;
+}
+
+.bg-custom5 {
+  background-color: #21b524;
+  color: white;
+}
+
+.bg-custom input {
+  border-radius: 20rem;
+  width: 230px;
+  outline: none;
+  box-shadow: none;
+}
+
+.input-group {
+  width: 300px;
+}
+
+.fila-alta td {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  vertical-align: middle;
+}

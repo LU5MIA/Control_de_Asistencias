@@ -1,0 +1,35 @@
+<div class="bg-custom mt-3 mb-5 d-flex justify-content-end">
+  <div class="me-4">
+
+    <!-- Botón del dropdown -->
+    <button class="me-2 border-0 bg-transparent" (click)="toggleDropdown()">
+      <i class="bi fs-5" [ngClass]="{
+        'bi-caret-down-fill': !dropdownAbierto,
+        'bi-caret-up-fill': dropdownAbierto
+      }">
+      </i>
+    </button>
+
+    <!-- Ícono de usuario 
+    <button class="me-2 border-0 bg-transparent">
+      <i class="bi bi-person-circle fs-4"></i>
+    </button>-->
+
+    <!-- Ícono de configuración -->
+    <button class="border-0 bg-transparent">
+      <i class="bi bi-person-gear fs-4"></i>
+    </button>
+  </div>
+  <!-- Dropdown de cerrar sesión -->
+  <div *ngIf="dropdownAbierto"
+    class="dropdown-menu-custom position-absolute mt-5 me-0 p-2 shadow rounded bg-custom2 text-center"
+    style="top: 2%; right: 0; width: 15rem;">
+
+    <div class="text-white mb-2 fw-bold">
+      {{ nombreUsuario }}
+    </div>
+    <a href="#" class="text-decoration-none text-white" (click)="cerrarSesion()">Cerrar sesión</a>
+  </div>
+
+
+</div>

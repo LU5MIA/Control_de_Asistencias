@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body, html {
+  height: 100%;
+}
+
+.background {
+  background-size: 400% 400%;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-box {
+  background-color: #fffef8;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 350px;
+  width: 100%;
+}
+
+.icon {
+  background-color: #2ba89c;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.login-box h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.login-box p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.formulario label {
+    color: #555;
+}
+
+.input-group {
+    margin-top: 10px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group i {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+button {
+  background-color: #2ba89c;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 7px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #258d84;
+}
+
+
+.degradado-animado {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* entre el fondo (-1) y el login-box (default es 1) */
+  
+  background: linear-gradient(-45deg, #2ba89c, #a8fffc, #16a597, #018075);
+  background-size: 400% 400%;
+  animation: movimientoFondo 10s ease infinite;
+  opacity: 0.6; /* ajusta la transparencia según te guste */
+}
+
+
+@keyframes movimientoFondo {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

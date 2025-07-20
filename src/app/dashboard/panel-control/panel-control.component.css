@@ -1,0 +1,108 @@
+h5 {
+    color: #8a8a8a;
+    font-size: 18px;
+}
+
+.bg-custom {
+    background-color: #329190;
+    border-radius: 20rem;
+    padding: 0.5rem;
+    width: 20rem;
+    border: none;
+}
+
+.bg-custom2 {
+    width: 40rem; 
+    height: 10rem;
+    padding: 3rem;
+    border: 1px solid black;
+}
+
+.bg-custom3 {
+    background-color: #329190;
+    border-radius: 1rem;
+    padding: 0.7rem;
+    width: 13rem;
+    height: 13rem;
+    border: none;
+}
+
+.bg-custom4 {
+    background-color: #1dadac;
+    border: none;
+    color: white;
+    width: 9rem;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    outline: none;
+    box-shadow: none;
+}
+
+
+.bg-custom5 {
+    background-color: #fec703;
+    border-radius: 1rem;
+    padding: 0.7rem;
+    width: 13rem;
+    height: 13rem;
+    border: none;
+}
+
+.bg-custom6{
+    background-color: #fdf9b4;
+    border: none;
+    color: black;
+    width: 9rem;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    outline: none;
+    box-shadow: none;
+}
+
+.bg-custom7{
+    background-color: #ff4000;
+    border-radius: 1rem;
+    padding: 0.7rem;
+    width: 13rem;
+    height: 13rem;
+    border: none;
+}
+
+.bg-custom8{
+    background-color: #ff914d;
+    border: none;
+    color: white;
+    width: 9rem;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    outline: none;
+    box-shadow: none;
+}
+
+.bg-custom input {
+    border-radius: 20rem;
+    width: 230px;
+    outline: none;
+    box-shadow: none;
+}
+
+.bg-custom .btn-mas {
+    outline: none;
+    box-shadow: none;
+}
+
+.bg-custom button {
+    margin-left: 1rem;
+    border: none;
+}
+
+.btn-animado {
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.btn-animado:hover {
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
+}

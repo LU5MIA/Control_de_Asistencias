@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<div class="background">
+  <div class="degradado-animado"></div>
+  <img src="icons/fondo2.jpg" alt="" srcset="">
+  
+</div>
+
+  
+  <div class="login-container">
+    <div class="login-box">
+      <div class="icon">
+        <i class="fas fa-clock"></i>
+      </div>
+      
+      <h2>Iniciar Sesion</h2>
+      <p>Accede a tu sistema de asistencia</p>
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+        <label for="usuario">Usuario</label>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="usuario" name="usuario" [(ngModel)]="usuario" required />
+        </div>
+
+        <label for="password">Contraseña</label>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" name="password" [(ngModel)]="password" required />
+        </div>
+
+        <button type="submit">Ingresar al sistema</button>
+      </form>
+    </div>
+</div>

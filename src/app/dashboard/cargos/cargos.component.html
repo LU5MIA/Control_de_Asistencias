@@ -1,0 +1,93 @@
+
+<h5 class="mb-4 ms-2">
+  Listado de Cargos
+</h5> 
+
+<div class="bg-custom d-flex align-items-center">
+  <button class="btn p-0 border-0 bg-transparent btn-mas" (click)="abrirFormularioAgregar()">
+    <i class="bi bi-plus-circle-fill text-white fs-4"></i>
+  </button>
+  <div class="input-group input-group-sm ms-auto input-container">
+    <input type="text"
+          class="form-control border-end-0 input-busqueda"
+          style="border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;"
+          placeholder="Ingrese un cargo"
+          [(ngModel)]="filtro"
+          name="filtro">
+
+    <span class="input-group-text bg-white border-start-0 me-2"
+          style="border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;">
+      <i class="bi bi-search"></i>
+    </span>
+  </div>
+</div>
+
+<div *ngIf="mostrarForm" class="modal-simulacion">
+  <div class="modal-simulacion-content">
+    <h5 class="mb-3 text-center rounded-4 border p-2 " style="border-radius: 12px;">
+      <i 
+        class="me-2" 
+        [ngClass]="editando ? 'bi bi-pencil-square' : 'bi bi-person-badge'">
+      </i>
+      {{ editando ? 'Editar Cargo' : 'Agregar Cargo' }}
+    </h5>
+
+    <form (ngSubmit)="editando ? actualizar() : add()" #formCargo="ngForm"> 
+      <div class="mb-3">
+        <label for="nuevoCargo" class="form-label">Nombre:</label>
+        <input type="text" class="form-control" id="nuevoCargo" name="cargo" [(ngModel)]="cargo.nombre" required>
+      </div>
+      <div class="text-center mt-4">
+        <button type="button" class="btn btn-danger rounded-4" style="width: 130px;" (click)="cerrarFormulario()">
+          <i class="bi bi-x-circle"></i> Cancelar
+        </button>
+        <button type="submit" class="btn btn-warning rounded-4 text-white ms-3" style="width: 130px;" [disabled]="formCargo.invalid">
+          <i class="bi bi-save"></i> Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+ 
+<table class="table table-borderless text-center mt-5" style="color: #8a8a8a;">
+  <thead class="table">
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Estado</th>
+      <th>Opciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let cargo of cargosFiltrados; let i = index" class="fila-alta">
+      <td>{{ i + 1 }}</td>
+      <td>{{ cargo.nombre }}</td>
+      <td>
+        <span [class]="cargo.estado ? 'badge bg-custom2 p-2 rounded-4' : 'badge bg-custom3 p-2 rounded-4'" style="width: 100px;">
+          {{ cargo.estado ? 'Activo' : 'Inactivo' }}
+        </span>
+      </td>
+      <td>
+        <!--Editar cargo-->
+        <button class="btn btn-sm btn-warning rounded-4 me-2" (click)="editarCargo(cargo)">
+          <i class="bi bi-pencil"></i>
+        </button>
+
+        <button *ngIf="!cargo.estado" class="btn btn-sm rounded-4 bg-custom5 me-2" (click)="activarCargo(cargo)">
+          <i class="bi bi-check2"></i>
+        </button>
+
+        <button *ngIf="cargo.estado" class="btn btn-sm rounded-4 btn-danger" (click)="desactivarCargo(cargo)">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </td>
+    </tr>
+    <tr *ngIf="cargosFiltrados.length === 0">
+      <td colspan="4" class="text-center text-muted">
+        No se encontraron cargos con ese nombre.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
