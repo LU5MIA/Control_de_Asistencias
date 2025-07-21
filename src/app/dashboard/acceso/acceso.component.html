@@ -1,20 +1,15 @@
-<h5 class="mb-4 ms-2">
-  Listado de Usuarios
-</h5>
+<h5 class="mb-4 ms-2">Listado de Usuarios</h5>
 
 <div class="bg-custom d-flex align-items-center">
-  <button class="btn p-0 border-0 bg-transparent btn-mas">
+  <button class="btn p-0 border-0 bg-transparent btn-mas" (click)="abrirFormularioAgregar()">
     <i class="bi bi-person-plus-fill text-white fs-4"></i>
   </button>
   <div class="input-group input-group-sm ms-auto input-container">
-    <input type="text"
-          class="form-control border-end-0 input-busqueda"
-          style="border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;"
-          placeholder="Ingrese un usuario"
-          name="filtro">
-
+    <input type="text" [(ngModel)]="filtro" class="form-control border-end-0 input-busqueda"
+      style="border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;" placeholder="Ingrese un usuario"
+      name="filtro" />
     <span class="input-group-text bg-white border-start-0 me-2"
-          style="border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;">
+      style="border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;">
       <i class="bi bi-search"></i>
     </span>
   </div>
@@ -32,54 +27,94 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="fila-alta">
-      <td>1</td>
-      <td>María López Rodriguez</td>
-      <td>mlopez</td>
-      <td>Administrador</td>
-      <td>Activo</td>
+    <tr class="fila-alta" *ngFor="let u of usuariosFiltrados; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ getNombreEmpleado(u.id_empleado) }}</td>
+      <td>{{ u.nombre_usuario }}</td>
+      <td>{{ getNombreRol(u.id_rol) }}</td>
       <td>
-        <button class="btn btn-sm btn-warning rounded-4 me-2"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm bg-custom5 rounded-4 me-2"><i class="bi bi-check2"></i></button>
-        <button class="btn btn-sm btn-secondary rounded-4"><i class="bi bi-key-fill"></i></button>
+        <span [ngClass]="u.estado ? 'badge bg-custom2 p-2 rounded-4' : 'badge bg-custom3 p-2 rounded-4'" style="width: 100px;">
+          {{ u.estado ? 'Activo' : 'Inactivo' }}
+        </span>
       </td>
-    </tr>
-    <tr class="fila-alta">
-      <td>2</td>
-      <td>Juan Pérez Alvarez</td>
-      <td>jperez</td>
-      <td>Empleado</td>
-      <td>Inactivo</td>
       <td>
-        <button class="btn btn-sm btn-warning rounded-4 me-2"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm btn-danger rounded-4 me-2"><i class="bi bi-x-lg"></i></button>
-        <button class="btn btn-sm btn-secondary rounded-4"><i class="bi bi-key-fill"></i></button>
-      </td>
-    </tr>
-    <tr class="fila-alta">
-      <td>3</td>
-      <td>Lucía Martínez Fernandez</td>
-      <td>lmartinez</td>
-      <td>Empleado</td>
-      <td>Activo</td>
-      <td>
-        <button class="btn btn-sm btn-warning rounded-4 me-2"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm bg-custom5 rounded-4 me-2"><i class="bi bi-check2"></i></button>
-        <button class="btn btn-sm btn-secondary rounded-4"><i class="bi bi-key-fill"></i></button>
-      </td>
-    </tr>
-    <tr class="fila-alta">
-      <td>4</td>
-      <td>Andrés Salas Martin</td>
-      <td>asalas</td>
-      <td>Empleado</td>
-      <td>Activo</td>
-      <td>
-        <button class="btn btn-sm btn-warning rounded-4 me-2"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm bg-custom5 rounded-4 me-2"><i class="bi bi-check2"></i></button>
-        <button class="btn btn-sm btn-secondary rounded-4"><i class="bi bi-key-fill"></i></button>
+        <button class="btn btn-sm btn-warning rounded-4 me-2" (click)="editarUsuario(u)">
+          <i class="bi bi-pencil"></i>
+        </button>
+
+        <button *ngIf="!u.estado" class="btn btn-sm bg-custom5 rounded-4 me-2" (click)="activarUsuario(u)">
+          <i class="bi bi-check2"></i>
+        </button>
+
+        <button *ngIf="u.estado" class="btn btn-sm btn-danger rounded-4 me-2" (click)="desactivarUsuario(u)">
+          <i class="bi bi-x-lg"></i>
+        </button>
+
+        <button class="btn btn-sm btn-secondary rounded-4" title="Cambiar contraseña">
+          <i class="bi bi-key-fill"></i>
+        </button>
       </td>
     </tr>
   </tbody>
 </table>
 
+<!-- FORMULARIO MODAL -->
+<div *ngIf="mostrarForm" class="modal-simulacion">
+  <div class="modal-simulacion-content p-4 rounded-4">
+    <h5 class="text-center mb-3">
+      <i class="bi" [ngClass]="editando ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
+      {{ editando ? 'Editar Usuario' : 'Nuevo Usuario' }}
+    </h5>
+
+    <div class="mb-3">
+      <label for="empleado" class="form-label">Empleado:</label>
+      <select id="empleado" class="form-select" [(ngModel)]="usuario.id_empleado" name="empleado">
+        <option [ngValue]="0">Seleccione un empleado</option>
+        <option *ngFor="let e of empleados" [ngValue]="e.id">
+          {{ e.nombre }} {{ e.ape_p }} {{ e.ape_m }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="nombre_usuario" class="form-label">Nombre de Usuario:</label>
+      <input type="text" id="nombre_usuario" class="form-control" [(ngModel)]="usuario.nombre_usuario"
+        name="nombre_usuario">
+    </div>
+
+    <div class="mb-3 position-relative" *ngIf="!editando">
+      <label for="contraseña" class="form-label">Contraseña:</label>
+      <input [type]="verPassword ? 'text' : 'password'" id="contraseña" class="form-control pe-5"
+        [(ngModel)]="usuario.password" name="contraseña" placeholder="Ingrese su contraseña">
+
+      <i class="bi mt-3" [ngClass]="verPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'" (click)="toggleVerPassword()"
+        style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer; color: #6c757d;">
+      </i>
+    </div>
+
+
+    <div class="mb-3">
+      <label for="rol" class="form-label">Rol:</label>
+      <select id="rol" class="form-select" [(ngModel)]="usuario.id_rol" name="rol">
+        <option [ngValue]="0">Seleccione un rol</option>
+        <option *ngFor="let r of roles" [ngValue]="r.id">
+          {{ r.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="text-center mt-4">
+      <button class="btn btn-danger rounded-4 me-3" (click)="cerrarFormulario()">
+        <i class="bi bi-x-circle"></i> Cancelar
+      </button>
+
+      <button class="btn btn-warning rounded-4" *ngIf="!editando" (click)="add()">
+        <i class="bi bi-save"></i> Guardar
+      </button>
+
+      <button class="btn btn-warning rounded-4" *ngIf="editando" (click)="actualizar()">
+        <i class="bi bi-arrow-clockwise"></i> Actualizar
+      </button>
+    </div>
+  </div>
+</div>

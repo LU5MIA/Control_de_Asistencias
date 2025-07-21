@@ -89,7 +89,7 @@ export class CargosComponent {
     this.cargosService.cambiarEstado(cargo.id, true);
     cargo.estado = true;
   }
-
+ 
   desactivarCargo(cargo: Cargos): void {
     this.cargosService.cambiarEstado(cargo.id, false);
     cargo.estado = false;

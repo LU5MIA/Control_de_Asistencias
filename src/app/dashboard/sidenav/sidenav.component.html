@@ -1,7 +1,7 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': '' " >
     <div class="logo-container" >
         <button class="logo-image" (click)="toggleCollapse()">
-            <img src="icons/image-sid.png" alt="" style="width: 60px;" >
+            <img src="assets/icons/image-sid.png" alt="" style="width: 60px;" >
         </button>
         <div class="logo-text" @fadeInOut *ngIf="collapsed">ASIST</div>
         <button class="btn-close" @rotate *ngIf="collapsed" (click)="closeSidenav()" >

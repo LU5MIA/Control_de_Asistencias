@@ -4,54 +4,57 @@
 <h6 class="mb-4 ms-2 text-danger" style="font-size: 13px;">
     *Esta información es importante para el sistema.
 </h6>
-<form action="">
-    <h5 class="mb-4 ms-2 mt-4">
-        Foto
-        <i class="bi bi-image ms-2"></i>
-    </h5>
+<form>
+    <h5 class="mb-4 ms-2">Foto <i class="bi bi-image ms-2"></i></h5>
 
     <div class="bg-custom2 rounded-4 text-center ms-5" style="width: 15rem; padding: 3rem;">
-        <!-- Botón personalizado que activa el input -->
-        <label for="archivo" class="btn bg-custom text-white mb-3" style="font-size: 10px;">Elegir archivo</label>
+        <div class="mb-3">
+            <img *ngIf="fotoBase64" [src]="fotoBase64" class="img-thumbnail rounded-circle" width="120" height="120">
 
-        <!-- Input real, oculto -->
-        <input type="file" id="archivo" (change)="onFileSelected($event)" style="display: none;">
+            <div *ngIf="!fotoBase64" class="text-muted" style="font-size: 12px;">
+                Sin foto
+            </div>
+        </div>
 
-        <!-- Texto debajo que muestra el nombre o mensaje -->
-        <div class="text-center" style="font-size: 10px;">
-            {{ nombreArchivo || 'Ningún archivo seleccionado' }}
+        <div *ngIf="!fotoBase64">
+            <label for="archivo" class="btn bg-custom text-white mb-3" style="font-size: 10px;">Elegir archivo</label>
+            <input type="file" id="archivo" (change)="onFileSelected($event)" style="display: none;">
+            <div class="text-center" style="font-size: 10px;">
+                {{ nombreArchivo || 'Ningún archivo seleccionado' }}
+            </div>
         </div>
     </div>
+
+
     <div class="mt-4" style="max-width: 700px;">
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Nombre usuario:</label>
-            <input type="text" placeholder="lucero08" class="form-control">
+            <input type="text" [value]="usuarioLogueado?.nombre_usuario" disabled>
         </div>
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Contraseña:</label>
-            <input type="password" placeholder="****" class="form-control">
+            <input type="password" [value]="usuarioLogueado?.password" disabled>
         </div>
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Nombres:</label>
-            <input type="text" placeholder="Lucero" class="form-control">
+            <input type="text" [value]="empleadoLogueado?.nombre" disabled>
         </div>
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Apellido Paterno:</label>
-            <input type="text" placeholder="Rodriguez" class="form-control">
+            <input type="text" [value]="empleadoLogueado?.ape_p" disabled>
         </div>
         <div class="d-flex align-items-center mb-3">
             <label style="width: 180px;" class="me-4">Apellido Materno:</label>
-            <input type="text" placeholder="Estacio" class="form-control">
+            <input type="text" [value]="empleadoLogueado?.ape_m" disabled>
         </div>
         <div class="d-flex align-items-center mb-2">
             <label style="width: 180px;" class="me-4">Correo Electrónico:</label>
-            <input type="email" placeholder="lucero@gmail.com" class="form-control">
+            <input type="email" [value]="empleadoLogueado?.correo" disabled>
         </div>
     </div>
 
-    <button type="submit" class="mt-4 bg-custom3 text-white rounded-5 px-3 py-2 border-0">
+    <button type="button" class="mt-4 bg-custom3 text-white rounded-5 px-3 py-2 border-0">
         <i class="bi bi-pencil-fill me-2"></i>
         Editar Perfil
     </button>
-
 </form>

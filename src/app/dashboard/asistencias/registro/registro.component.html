@@ -1,31 +1,35 @@
-<form action="" class="ms-5">
+<form (ngSubmit)="marcarAsistencia()" #formulario="ngForm" class="ms-5">
     <h5 class="mb-4 ms-2">
-        Registro de Asistencia de entrada
-    </h5> 
+        {{ asistenciaCompletaHoy
+        ? 'Asistencias completas'
+        : 'Registro de asistencia de ' + (yaMarcoEntrada ? 'salida' : 'entrada') }}
+    </h5>
+
+    <div *ngIf="!registroAbierto" class="text-danger mt-2 mb-3">
+        ❌ El sistema está cerrado. Puedes registrar asistencia entre 10:00 AM y 12:00 PM.
+    </div>
+
     <div class="position-relative" style="width: 40rem;">
         <i class="bi bi-calendar position-absolute" style="left: 1rem; top: 50%; transform: translateY(-50%);"></i>
-
         <input class="input-time rounded-5 bg-custom2 ps-5" type="text" style="width: 100%; padding: 0.8rem;"
             [value]="horaActual" disabled>
     </div>
 
     <h5 class="mb-4 ms-2 mt-4">
-        Foto
-        <i class="bi bi-image ms-2"></i>
+        Foto <i class="bi bi-image ms-2"></i>
     </h5>
+
     <div class="bg-custom2 rounded-5 text-center" style="width: 40rem; padding: 3rem;">
-        <!-- Botón personalizado que activa el input -->
         <label for="archivo" class="btn bg-custom text-white mb-3">Elegir archivo</label>
-
-        <!-- Input real, oculto -->
         <input type="file" id="archivo" (change)="onFileSelected($event)" style="display: none;">
-
-        <!-- Texto debajo que muestra el nombre o mensaje -->
         <div class="text-center">
             {{ nombreArchivo || 'Ningún archivo seleccionado' }}
         </div>
     </div>
 
-    <button type="submit" class=" mt-4 bg-custom3 text-white rounded-5">Marcar Asistencia ✅</button>
+    <button type="submit" class="mt-4 bg-custom3 text-white rounded-5"
+        [disabled]="asistenciaCompletaHoy || !registroAbierto">
+        Marcar Asistencia ✅
+    </button>
 
 </form>

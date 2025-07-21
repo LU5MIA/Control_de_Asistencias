@@ -26,7 +26,10 @@ export class NavbarComponent implements OnInit {
   cerrarSesion() {
     this.dropdownAbierto = false;
     localStorage.removeItem('nombreUsuario');
+    localStorage.removeItem('usuarioLogueado');
+    localStorage.removeItem('empleadoLogueado');
     this.router.navigate(['/login']);
   }
+
 
 }

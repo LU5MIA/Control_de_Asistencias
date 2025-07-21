@@ -68,6 +68,10 @@ export class HorariosService {
   }
 
   constructor() {
-    console.log("Servicio inicializado de horarios")
+    console.log("Servicio inicializado de horarios");
+
+    // Guardar los horarios en localStorage al iniciar
+    localStorage.setItem('horarios', JSON.stringify(this._horario));
   }
+
 }

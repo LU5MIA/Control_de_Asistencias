@@ -6,6 +6,7 @@ import { InformeComponent } from './informe/informe.component';
 import { RegistroComponent } from './registro/registro.component';
 import { InformeGeneralComponent } from './informe-general/informe-general.component';
 import { JustificacionesComponent } from './justificaciones/justificaciones.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -20,7 +21,8 @@ import { JustificacionesComponent } from './justificaciones/justificaciones.comp
   ],
   imports: [
     CommonModule,
-    AsistenciasRoutingModule
+    AsistenciasRoutingModule,
+    FormsModule
   ]
 })
 export class AsistenciasModule { }

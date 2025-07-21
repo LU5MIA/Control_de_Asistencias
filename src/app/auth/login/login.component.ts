@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Usuarios } from '../../interfaces/usuarios';
+import { Empleados } from '../../interfaces/empleados';
+import { UsuariosService } from '../../servicios/usuarios.service';
+import { EmpleadosService } from '../../servicios/empleados.service';
+import { HorariosService } from '../../servicios/horarios.service';
 
 @Component({
   selector: 'app-login',
@@ -12,33 +17,57 @@ export class LoginComponent {
   usuario: string = '';
   password: string = '';
 
-  usuariosValidos = [
-    { usuario: 'lucero', password: '1234' },
-    { usuario: 'juan', password: 'admin123' },
-    { usuario: 'maria', password: 'maria2025' },
-    { usuario: 'carlos', password: 'pass456' }
-  ];
+  usuarios: Usuarios[] = [];
+  empleados: Empleados[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private usuariosService: UsuariosService,
+    private empleadosService: EmpleadosService,
+    private horariosService: HorariosService
+  ) { }
 
-  onSubmit(form: any) {
+  ngOnInit(): void {
+    // Cargar los datos desde los servicios
+    this.usuarios = this.usuariosService.usuario; // o getUsuarios() si usas métodos
+    this.empleados = this.empleadosService.empleado; // o getEmpleados()
+  }
 
+  onSubmit(form: any): void {
     if (form.invalid) {
       alert('Por favor, completa todos los campos');
       return;
     }
 
-    const usuarioEncontrado = this.usuariosValidos.find(
-      u => u.usuario === this.usuario && u.password === this.password
+    const usuarioEncontrado = this.usuarios.find(
+      u => u.nombre_usuario === this.usuario &&
+        u.password === this.password &&
+        u.estado === true
     );
 
     if (usuarioEncontrado) {
-      console.log('Login correcto. Redirigiendo...');
-      localStorage.setItem('nombreUsuario', usuarioEncontrado.usuario); // <--- Guardar el nombre
-      window.location.href = '/dashboard/cargos';
-    } else {
-      alert('Usuario o contraseña incorrectos');
-    }
-  }
+      const empleado = this.empleados.find(e => e.id === usuarioEncontrado.id_empleado);
 
+      localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioEncontrado));
+
+      if (empleado) {
+        const nombreCompleto = `${empleado.nombre} ${empleado.ape_p} ${empleado.ape_m}`;
+        localStorage.setItem('nombreUsuario', nombreCompleto);
+        localStorage.setItem('empleadoLogueado', JSON.stringify(empleado));
+
+        const horarioEmpleado = this.horariosService.horario.find(
+          h => h.id === empleado.id_horario
+        );
+
+        if (horarioEmpleado) {
+          localStorage.setItem('horarioEmpleado', JSON.stringify(horarioEmpleado));
+        }
+      }
+
+      console.log('Login correcto. Redirigiendo...');
+      this.router.navigate(['/dashboard/cargos']);
+    }
+
+
+  }
 }

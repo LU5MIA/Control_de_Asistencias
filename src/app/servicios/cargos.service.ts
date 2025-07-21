@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class CargosService {
-
+ 
   private _nextid = 5
   private _cargos: Cargos[] = [
     {
@@ -52,7 +52,6 @@ export class CargosService {
     }
   }
 
-  
   // Cambiar estado (activar o desactivar)
   cambiarEstado = (id: number, nuevoEstado: boolean): void => {
     const cargo = this._cargos.find(c => c.id === id);

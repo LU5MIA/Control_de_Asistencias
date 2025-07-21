@@ -3,24 +3,22 @@
 </h5>
 
 <div class="bg-custom d-flex align-items-center">
-  <button class="btn p-0 border-0 bg-transparent btn-mas">
+  <button class="btn p-0 border-0 bg-transparent btn-mas" (click)="abrirFormularioAgregar()">
     <i class="bi bi-person-plus-fill text-white fs-4"></i>
   </button>
   <div class="input-group input-group-sm ms-auto input-container">
-    <input type="text"
-          class="form-control border-end-0 input-busqueda"
-          style="border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;"
-          placeholder="Ingrese un empleado"
-          name="filtro">
+    <input type="text" class="form-control border-end-0 input-busqueda"
+      style="border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;" placeholder="Ingrese un empleado"
+      name="filtro" [(ngModel)]="filtro">
 
     <span class="input-group-text bg-white border-start-0 me-2"
-          style="border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;">
+      style="border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;">
       <i class="bi bi-search"></i>
     </span>
   </div>
 </div>
 
-<table class="table table-borderless text-center mt-5" style="color: #8a8a8a;">
+<table class="table table-borderless text-center mt-5" style="color: #8a8a8a;" *ngIf="empleadosFiltrados.length > 0">
   <thead class="table">
     <tr>
       <th>#</th>
@@ -37,70 +35,121 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="fila-alta">
-      <td>1</td>
-      <td>72839415</td>
-      <td>Maria</td>
-      <td>Gonzales</td>
-      <td>Lopez</td>
-      <td>glopezemail.com</td>
-      <td>08:00 - 16:00</td>
-      <td>RR.HH</td>
-      <td>Analista</td>
-      <td><span class="badge bg-custom2 p-2 rounded-4">Activo</span></td>
+    <tr class="fila-alta" *ngFor="let e of empleadosFiltrados; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ e.dni }}</td>
+      <td>{{ e.nombre }}</td>
+      <td>{{ e.ape_p }}</td>
+      <td>{{ e.ape_m }}</td>
+      <td>{{ e.correo }}</td>
+      <td>{{ getHorarioTexto(e.id_horario) }}</td>
+      <td>{{ getNombreDepartamento(e.id_departamento) }}</td>
+      <td>{{ getNombreCargo(e.id_cargo) }}</td>
+
       <td>
-        <button class="btn btn-sm btn-warning rounded-4 me-2"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm rounded-4 btn-danger"><i class="bi bi-x-lg"></i></button>
+        <span class="badge p-2 rounded-4" [ngClass]="e.estado ? 'bg-custom2' : 'bg-custom3 text-white'">
+          {{ e.estado ? 'Activo' : 'Inactivo' }}
+        </span>
       </td>
-    </tr>
-    <tr class="fila-alta">
-      <td>2</td>
-      <td>81254763</td>
-      <td>Pedro</td>
-      <td>Ramírez</td>
-      <td>Torres</td>
-      <td>rtorresemail.com</td>
-      <td>09:00 - 17:00</td>
-      <td>Contabilidad</td>
-      <td>Asistente</td>
-      <td><span class="badge bg-custom3 p-2 rounded-4 text-white">Inactivo</span></td>
       <td>
-        <button class="btn btn-sm btn-warning rounded-4 me-2"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm rounded-4 bg-custom5 me-2"><i class="bi bi-check2"></i></button>
-      </td>
-    </tr>
-    <tr class="fila-alta">
-      <td>3</td>
-      <td>70618234</td>
-      <td>Linares</td> 
-      <td>Fernández</td>
-      <td>Muñoz</td>
-      <td>fmunozemail.com</td>
-      <td>07:00 - 15:00</td>
-      <td>Logística</td>
-      <td>Supervisor</td>
-      <td><span class="badge bg-custom3 p-2 rounded-4 text-white">Inactivo</span></td>
-      <td>
-        <button class="btn btn-sm btn-warning rounded-4 me-2"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm rounded-4 bg-custom5 me-2"><i class="bi bi-check2"></i></button>
-      </td>
-    </tr>
-    <tr class="fila-alta">
-      <td>4</td>
-      <td>79012345</td>
-      <td>Nicol</td>
-      <td>Castillo</td>
-      <td>Reyes</td>
-      <td>creyesemail.com</td>
-      <td>10:00 - 18:00</td>
-      <td>Ventas</td>
-      <td>Ejecutivo</td>
-      <td><span class="badge bg-custom2 p-2 rounded-4">Activo</span></td>
-      <td>
-        <button class="btn btn-sm btn-warning rounded-4 me-2"><i class="bi bi-pencil"></i></button>
-        <button class="btn btn-sm rounded-4 btn-danger"><i class="bi bi-x-lg"></i></button>
+        <button class="btn btn-sm btn-warning rounded-4 me-2" (click)="editarEmpleado(e)">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="btn btn-sm rounded-4 me-2" [ngClass]="e.estado ? 'btn-danger' : 'bg-custom5'"
+          (click)="e.estado ? desactivarEmpleado(e) : activarEmpleado(e)">
+          <i [ngClass]="e.estado ? 'bi bi-x-lg' : 'bi bi-check2'"></i>
+        </button>
       </td>
     </tr>
   </tbody>
 </table>
 
+<!-- Mensaje si no hay resultados -->
+<div *ngIf="empleadosFiltrados.length === 0" class="text-center mt-4 text-muted">
+  No se encontraron empleados.
+</div>
+
+<div *ngIf="mostrarForm" class="modal-simulacion">
+  <div class="modal-simulacion-content">
+    <h5 class="mb-3 text-center rounded-4 border p-2" style="border-radius: 12px;">
+      <i class="me-2" [ngClass]="editando ? 'bi bi-pencil-square' : 'bi bi-person-badge'">
+      </i>
+      {{ editando ? 'Editar Empleado' : 'Agregar Empleado' }}
+    </h5>
+
+    <form (ngSubmit)="editando ? actualizar() : add()" #formEmpleado="ngForm">
+
+      <!-- DNI, Nombre, Apellidos en 2 columnas -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="dni" class="form-label">DNI:</label>
+          <input type="text" class="form-control" id="dni" name="dni" pattern="^[0-9]{8}$" maxlength="8"
+            [(ngModel)]="empleado.dni" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="nombre" class="form-label">Nombre:</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="empleado.nombre" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="ape_p" class="form-label">Apellido Paterno:</label>
+          <input type="text" class="form-control" id="ape_p" name="ape_p" [(ngModel)]="empleado.ape_p" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="ape_m" class="form-label">Apellido Materno:</label>
+          <input type="text" class="form-control" id="ape_m" name="ape_m" [(ngModel)]="empleado.ape_m" required>
+        </div>
+      </div>
+
+      <!-- Correo (una sola columna) -->
+      <div class="mb-3">
+        <label for="correo" class="form-label">Correo Electrónico:</label>
+        <input type="email" class="form-control" id="correo" name="correo" [(ngModel)]="empleado.correo" required>
+      </div>
+
+      <!-- Horario, Departamento y Cargo en 3 columnas -->
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="id_horario" class="form-label">Horario:</label>
+          <select class="form-select" id="id_horario" name="id_horario" [(ngModel)]="empleado.id_horario" required>
+            <option [ngValue]="0" disabled selected>Seleccione</option>
+            <option *ngFor="let h of horario" [ngValue]="h.id">
+              {{ h.hora_entrada }} - {{ h.hora_salida }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="id_departamento" class="form-label">Departamento:</label>
+          <select class="form-select" id="id_departamento" name="id_departamento" [(ngModel)]="empleado.id_departamento"
+            required>
+            <option [ngValue]="0" disabled selected>Seleccione</option>
+            <option *ngFor="let d of dpto" [ngValue]="d.id">
+              {{ d.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="id_cargo" class="form-label">Cargo:</label>
+          <select class="form-select" id="id_cargo" name="id_cargo" [(ngModel)]="empleado.id_cargo" required>
+            <option [ngValue]="0" disabled selected>Seleccione</option>
+            <option *ngFor="let c of cargo" [ngValue]="c.id">
+              {{ c.nombre }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+
+      <!-- Botones -->
+      <div class="text-center mt-4">
+        <button type="button" class="btn btn-danger rounded-4" style="width: 130px;" (click)="cerrarFormulario()">
+          <i class="bi bi-x-circle"></i> Cancelar
+        </button>
+        <button type="submit" class="btn btn-warning rounded-4 text-white ms-3" style="width: 130px;"
+          [disabled]="formEmpleado.invalid">
+          <i class="bi bi-save"></i> Guardar
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
