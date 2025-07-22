@@ -47,8 +47,9 @@ export class AccesoComponent {
   }
 
   get empleados(): Empleados[] {
-    return this.empleadoService.empleado;
+    return this.empleadoService.empleado.filter(e => e.estado); // solo activos
   }
+
 
   get roles(): Roles[] {
     return this.rolService.roles;
@@ -137,10 +138,6 @@ export class AccesoComponent {
 
     this.generarYEnviarContrasena(empleado, nuevaPassword);
   }
-
-
-
-
 
   add = () => {
     const usuarioNuevo: Usuarios = {

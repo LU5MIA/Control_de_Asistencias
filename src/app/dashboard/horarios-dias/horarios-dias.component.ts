@@ -49,15 +49,20 @@ export class HorariosDiasComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dias = this.diasService.dia;
-    this.horarios = this.horariosService.horario;
+    // Filtrar solo días y horarios activos
+    this.dias = this.dia.filter(d => d.estado);
+    this.horarios = this.horario.filter(h => h.estado);
 
+    // Buscar lunes o el primer día activo disponible
     const diaLunes = this.dias.find(d => d.nombre.toLowerCase() === 'lunes');
-    if (diaLunes) {
-      this.diaSeleccionadoId = diaLunes.id;
-      this.seleccionarDia(+this.diaSeleccionadoId);
+    const diaInicial = diaLunes || this.dias[0]; // Usa lunes si existe, si no el primero
+
+    if (diaInicial) {
+      this.diaSeleccionadoId = diaInicial.id;
+      this.seleccionarDia(diaInicial.id);
     }
   }
+
 
   seleccionarDia(idDia: number) {
     this.idDiaSeleccionado = idDia;

@@ -13,14 +13,13 @@ import { RolesPermisosService } from '../../servicios/roles-permisos.service';
 })
 export class RolesPermisosComponent implements OnInit {
 
-  roles: Roles[] = [];
   filtro: string = '';
   permisos: Permisos[] = [];
   idRolSeleccionado: number = 0;
   rolSeleccionadoId: number = 0;
   permisosSeleccionados: number[] = [];
-  mostrarForm = false; // Mostrar u ocultar el modal
-  permisosSeleccionadosMap: { [id: number]: boolean } = {}; // Para los checkboxes
+  mostrarForm = false;
+  permisosSeleccionadosMap: { [id: number]: boolean } = {};
 
   constructor(
     private rolesService: RolesService,
@@ -49,13 +48,16 @@ export class RolesPermisosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.roles = this.rolesService.roles;
     this.permisos = this.permisosService.permisos;
 
-    const rolAdmin = this.roles.find(r => r.nombre.toLowerCase() === 'administrador');
+    const rolAdmin = this.rol.find(r => r.nombre.toLowerCase() === 'administrador');
     if (rolAdmin) {
       this.rolSeleccionadoId = rolAdmin.id;
       this.seleccionarRol(+this.rolSeleccionadoId);
+    } else if (this.rol.length > 0) {
+      // Si no hay "Administrador", selecciona el primero
+      this.rolSeleccionadoId = this.rol[0].id;
+      this.seleccionarRol(this.rolSeleccionadoId);
     }
   }
 
@@ -72,7 +74,6 @@ export class RolesPermisosComponent implements OnInit {
     this.filtro = '';
   }
 
-
   togglePermiso(idPermiso: number) {
     if (this.permisosSeleccionados.includes(idPermiso)) {
       this.permisosSeleccionados = this.permisosSeleccionados.filter(p => p !== idPermiso);
@@ -85,7 +86,6 @@ export class RolesPermisosComponent implements OnInit {
     this.rolSeleccionadoId = idRol;
     this.mostrarForm = true;
 
-    // Cargar los permisos asignados al rol en el mapa de checkboxes
     const permisosAsignados = this.rolesPermisosService.getPermisosPorRol(idRol);
     this.permisosSeleccionadosMap = {};
 
@@ -96,7 +96,7 @@ export class RolesPermisosComponent implements OnInit {
 
   guardarAsignacion() {
     const permisosSeleccionados: number[] = Object.keys(this.permisosSeleccionadosMap)
-      .filter(id => this.permisosSeleccionadosMap[+id]) // +id para convertir string a number
+      .filter(id => this.permisosSeleccionadosMap[+id])
       .map(id => +id);
 
     this.rolesPermisosService.asignarPermisos(this.rolSeleccionadoId, permisosSeleccionados);
@@ -109,16 +109,12 @@ export class RolesPermisosComponent implements OnInit {
 
     if (confirmado) {
       this.rolesPermisosService.eliminarAsignacion(idRol, idPermiso);
-      // Refresca los permisos seleccionados y la vista
       this.permisosSeleccionados = this.rolesPermisosService.getPermisosPorRol(idRol);
-      
     }
   }
 
   cerrarFormulario() {
     this.mostrarForm = false;
     this.permisosSeleccionadosMap = {};
-
   }
-
 }

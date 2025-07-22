@@ -18,6 +18,11 @@ export class DiasService {
     return [...this._dias];
   }
 
+  // Obtener solo dias activos
+  get diasActivos(): Dias[] {
+    return this._dias.filter(d => d.estado);
+  }
+
   // Cargar desde localStorage o usar los valores por defecto
   private cargarDias(): void {
     const data = localStorage.getItem('dias');

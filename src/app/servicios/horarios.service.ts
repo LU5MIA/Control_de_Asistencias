@@ -72,6 +72,11 @@ export class HorariosService {
     return [...this._horario];
   }
 
+  // Obtener solo horarios activos
+  get horariosActivos(): Horarios[] {
+    return this._horario.filter(h => h.estado);
+  }
+
   // Agregar nuevo horario
   add = (horario: Horarios): void => {
     horario.id = this._nextid++;

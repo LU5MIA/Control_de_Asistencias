@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuarios } from '../../interfaces/usuarios';
 import { Empleados } from '../../interfaces/empleados';
+import { UsuariosService } from '../../servicios/usuarios.service';
+import { EmpleadosService } from '../../servicios/empleados.service';
 
 @Component({
   selector: 'app-perfil',
@@ -13,6 +15,18 @@ export class PerfilComponent implements OnInit {
   fotoBase64: string | null = localStorage.getItem('fotoUsuario');
   usuarioLogueado: Usuarios | null = null;
   empleadoLogueado: Empleados | null = null;
+  modoEdicion: boolean = false;
+  mostrarPassword: boolean = false;
+  fotoOriginal: string | null = null;
+  usuarioOriginal: any = null;
+  empleadoOriginal: any = null;
+
+
+
+  constructor(
+    private usuarioService: UsuariosService,
+    private empleadosService: EmpleadosService,
+  ) { }
 
   ngOnInit(): void {
     const usuarioGuardado = localStorage.getItem('usuarioLogueado');
@@ -47,6 +61,41 @@ export class PerfilComponent implements OnInit {
 
       reader.readAsDataURL(file);
     }
+  }
+
+  activarEdicion() {
+    this.modoEdicion = true;
+  }
+
+  actualizarPerfil() {
+    const usuarioActual = JSON.stringify(this.usuarioLogueado);
+    const empleadoActual = JSON.stringify(this.empleadoLogueado);
+
+    const cambiosUsuario = usuarioActual !== this.usuarioOriginal;
+    const cambiosEmpleado = empleadoActual !== this.empleadoOriginal;
+    const cambiosFoto = this.fotoBase64 !== this.fotoOriginal;
+
+    if (cambiosUsuario || cambiosEmpleado || cambiosFoto) {
+      if (this.usuarioLogueado && this.empleadoLogueado) {
+        this.usuarioService.actualizar(this.usuarioLogueado);
+        this.empleadosService.actualizar(this.empleadoLogueado);
+
+        localStorage.setItem('usuarioLogueado', JSON.stringify(this.usuarioLogueado));
+        localStorage.setItem('empleadoLogueado', JSON.stringify(this.empleadoLogueado));
+
+        // Actualiza backups
+        this.usuarioOriginal = usuarioActual;
+        this.empleadoOriginal = empleadoActual;
+        this.fotoOriginal = this.fotoBase64;
+
+        alert('✅ Perfil actualizado correctamente');
+        console.log('Perfil actualizado correctamente');
+      }
+    } else {
+      alert('ℹ️ No se detectaron cambios');
+    }
+
+    this.modoEdicion = false;
   }
 
 }

@@ -41,15 +41,15 @@ export class EmpleadosComponent {
   };
 
   get horario(): Horarios[] {
-    return this.horarioService.horario;
+    return this.horarioService.horariosActivos;
   }
 
   get dpto(): Departamentos[] {
-    return this.dptoService.departamentos;
+    return this.dptoService.DepartamentosActivos;
   }
 
   get cargo(): Cargos[] {
-    return this.cargosService.cargos;
+    return this.cargosService.cargosActivos;
   }
 
   getHorarioTexto(id: number): string {

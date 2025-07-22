@@ -4,10 +4,15 @@
 <h6 class="mb-4 ms-2 text-danger" style="font-size: 13px;">
     *Esta información es importante para el sistema.
 </h6>
-<form>
-    <h5 class="mb-4 ms-2">Foto <i class="bi bi-image ms-2"></i></h5>
+<form *ngIf="usuarioLogueado && empleadoLogueado">
+    <h5 [ngClass]="{ 'mb-4': !fotoBase64 }" class="ms-2">
+        Foto <i class="bi bi-image ms-2"></i>
+    </h5>
 
-    <div [ngClass]="{ 'bg-custom2': !fotoBase64 }" class="bg-custom2 rounded-4 text-center ms-5" style="width: 15rem; padding: 3rem;">
+
+    <div [ngClass]="{ 'bg-custom2': !fotoBase64 }" class="bg-custom2 rounded-4 text-center ms-5"
+        style="width: 15rem; padding: 3rem;">
+
         <div>
             <img *ngIf="fotoBase64" [src]="fotoBase64" class="rounded-3" width="130" height="180">
 
@@ -16,7 +21,8 @@
             </div>
         </div>
 
-        <div *ngIf="!fotoBase64">
+        <!-- Botón para elegir foto SIEMPRE visible solo cuando está en modo edición -->
+        <div *ngIf="modoEdicion" class="mt-4">
             <label for="archivo" class="btn bg-custom text-white mb-3" style="font-size: 10px;">Elegir archivo</label>
             <input type="file" id="archivo" (change)="onFileSelected($event)" style="display: none;">
             <div class="text-center" style="font-size: 10px;">
@@ -25,36 +31,51 @@
         </div>
     </div>
 
-
-    <div class="mt-5" style="max-width: 350px;">
+    <div [ngClass]="{ 'mt-5': !fotoBase64 }" style="max-width: 350px;">
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Nombre usuario:</label>
-            <input type="text" [value]="usuarioLogueado?.nombre_usuario" disabled>
+            <input type="text" [(ngModel)]="usuarioLogueado.nombre_usuario" [disabled]="!modoEdicion"
+                name="nombre_usuario">
         </div>
+
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Contraseña:</label>
-            <input type="password" [value]="usuarioLogueado?.password" disabled>
+
+            <div class="position-relative flex-grow-1">
+                <input [type]="mostrarPassword ? 'text' : 'password'" [(ngModel)]="usuarioLogueado.password"
+                    [disabled]="!modoEdicion" name="password" />
+                <i class="bi" [ngClass]="mostrarPassword ? 'bi-eye-slash' : 'bi-eye'"
+                    (click)="mostrarPassword = !mostrarPassword"
+                    style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+            </div>
         </div>
+
+
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Nombres:</label>
-            <input type="text" [value]="empleadoLogueado?.nombre" disabled>
+            <input type="text" [(ngModel)]="empleadoLogueado.nombre" [disabled]="!modoEdicion" name="nombre">
         </div>
+
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Apellido Paterno:</label>
-            <input type="text" [value]="empleadoLogueado?.ape_p" disabled>
+            <input type="text" [(ngModel)]="empleadoLogueado.ape_p" [disabled]="!modoEdicion" name="ape_p">
         </div>
+
         <div class="d-flex align-items-center mb-3">
             <label style="width: 180px;" class="me-4">Apellido Materno:</label>
-            <input type="text" [value]="empleadoLogueado?.ape_m" disabled>
+            <input type="text" [(ngModel)]="empleadoLogueado.ape_m" [disabled]="!modoEdicion" name="ape_m">
         </div>
+
         <div class="d-flex align-items-center mb-2">
             <label style="width: 180px;" class="me-4">Correo Electrónico:</label>
-            <input type="email" [value]="empleadoLogueado?.correo" disabled>
+            <input type="email" [(ngModel)]="empleadoLogueado.correo" [disabled]="!modoEdicion" name="correo">
         </div>
     </div>
 
-    <button type="button" class="mt-4 bg-custom3 text-white rounded-5 px-3 py-2 border-0">
-        <i class="bi bi-pencil-fill me-2"></i>
-        Editar Perfil
+
+    <button type="button" class="mt-4 mb-5 bg-custom3 text-white rounded-5 px-3 py-2 border-0"
+        (click)="modoEdicion ? actualizarPerfil() : activarEdicion()">
+        <i [ngClass]="modoEdicion ? 'bi bi-check2-circle' : 'bi bi-pencil-fill'" class="me-2"></i>
+        {{ modoEdicion ? 'Actualizar Perfil' : 'Editar Perfil' }}
     </button>
 </form>

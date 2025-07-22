@@ -31,6 +31,12 @@ export class CargosService {
     return [...this._cargos];
   }
 
+  // Obtener solo cargos activos
+  get cargosActivos(): Cargos[] {
+    return this._cargos.filter(c => c.estado);
+  }
+
+
   // Guardar en localStorage
   private guardarLocalStorage() {
     localStorage.setItem('cargos', JSON.stringify(this._cargos));

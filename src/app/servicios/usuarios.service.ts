@@ -84,4 +84,12 @@ export class UsuariosService {
       this.guardarEnLocalStorage();
     }
   }
+
+  getUsuarioActivoPorNombreYPassword(nombre: string, password: string): Usuarios | null {
+    const usuario = this._usuarios.find(
+      u => u.nombre_usuario === nombre && u.password === password && u.estado
+    );
+    return usuario || null;
+  }
+
 }

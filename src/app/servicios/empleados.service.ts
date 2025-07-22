@@ -101,4 +101,9 @@ export class EmpleadosService {
       this.guardarLocalStorage();
     }
   }
+
+  get empleadosActivos(): Empleados[] {
+    return this._empleados.filter(e => e.estado);
+  }
+
 }

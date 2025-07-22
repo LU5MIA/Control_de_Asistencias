@@ -32,6 +32,11 @@ export class DepartamentosService {
     return [...this._departamentos];
   }
 
+  // Obtener solo departamentos activos
+  get DepartamentosActivos(): Departamentos[] {
+    return this._departamentos.filter(d => d.estado);
+  }
+
   // Método para guardar en localStorage
   private guardarLocalStorage() {
     localStorage.setItem('departamentos', JSON.stringify(this._departamentos));

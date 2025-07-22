@@ -16,7 +16,7 @@ export class LoginComponent {
 
   usuario: string = '';
   password: string = '';
-
+  verPassword: boolean = false;
   usuarios: Usuarios[] = [];
   empleados: Empleados[] = [];
 
@@ -26,6 +26,10 @@ export class LoginComponent {
     private empleadosService: EmpleadosService,
     private horariosService: HorariosService
   ) { }
+
+  toggleVerPassword(): void {
+    this.verPassword = !this.verPassword;
+  }
 
   ngOnInit(): void {
     // Cargar los datos desde los servicios
@@ -39,11 +43,13 @@ export class LoginComponent {
       return;
     }
 
-    const usuarioEncontrado = this.usuarios.find(
-      u => u.nombre_usuario === this.usuario &&
-        u.password === this.password &&
-        u.estado === true
+    const usuarioEncontrado = this.usuarios.find(u =>
+      u.nombre_usuario === this.usuario &&
+      u.password === this.password &&
+      u.estado === true &&
+      this.empleados.some(e => e.id === u.id_empleado && e.estado === true)
     );
+
 
     if (usuarioEncontrado) {
       const empleado = this.empleados.find(e => e.id === usuarioEncontrado.id_empleado);

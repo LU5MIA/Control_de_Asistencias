@@ -2,32 +2,37 @@
 <div class="background">
   <div class="degradado-animado"></div>
   <img src="assets/icons/fondo2.jpg" alt="" srcset="">
-  
+
 </div>
 
-  
-  <div class="login-container">
-    <div class="login-box">
-      <div class="icon">
-        <i class="fas fa-clock"></i>
-      </div>
-      
-      <h2>Iniciar Sesion</h2>
-      <p>Accede a tu sistema de asistencia</p>
-      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-        <label for="usuario">Usuario</label>
-        <div class="input-group">
-          <i class="fas fa-user"></i>
-          <input type="text" id="usuario" name="usuario" [(ngModel)]="usuario" required />
-        </div>
 
-        <label for="password">Contraseña</label>
-        <div class="input-group">
-          <i class="fas fa-lock"></i>
-          <input type="password" id="password" name="password" [(ngModel)]="password" required />
-        </div>
-
-        <button type="submit">Ingresar al sistema</button>
-      </form>
+<div class="login-container">
+  <div class="login-box">
+    <div class="icon">
+      <i class="fas fa-clock"></i>
     </div>
+
+    <h2>Iniciar Sesion</h2>
+    <p>Accede a tu sistema de asistencia</p>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <label for="usuario">Usuario</label>
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" id="usuario" name="usuario" [(ngModel)]="usuario" required />
+      </div>
+
+      <label for="password">Contraseña</label>
+      <div class="input-group" style="position: relative;">
+        <i class="fas" [ngClass]="verPassword ? 'fa-lock-open' : 'fa-lock'" (click)="toggleVerPassword()"
+          style="cursor: pointer; position: absolute; left: 10px; top: 50%; transform: translateY(-50%);">
+        </i>
+
+        <input [type]="verPassword ? 'text' : 'password'" id="password" name="password" [(ngModel)]="password" required
+          style="padding-left: 2rem;" />
+      </div>
+
+
+      <button type="submit">Ingresar al sistema</button>
+    </form>
+  </div>
 </div>
