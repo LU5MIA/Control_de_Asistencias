@@ -12,6 +12,7 @@ import { PermisosComponent } from './permisos/permisos.component';
 import { HorariosDiasComponent } from './horarios-dias/horarios-dias.component';
 import { RolesPermisosComponent } from './roles-permisos/roles-permisos.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -19,7 +20,12 @@ const routes: Routes = [
     component: DashboardLayoutComponent,
     children: [
       { path: '', redirectTo: 'panel-control', pathMatch: 'full' },
-      { path: 'panel-control', component: PanelControlComponent },
+      {
+        path: 'panel-control',
+        component: PanelControlComponent,
+        canActivate: [AuthGuard],
+        data: { rol: 'Administrador' }
+      },
       { path: 'roles', component: RolesComponent },
       { path: 'permisos', component: PermisosComponent },
       { path: 'roles-permisos', component: RolesPermisosComponent },

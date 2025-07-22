@@ -11,9 +11,17 @@
     </select>
 
     <div class="input-group input-group-sm ms-auto input-container">
-        <input type="date" class="form-control border-end-0 redonde input-busqueda" style="border-radius: 2rem;"
-            [(ngModel)]="fechaSeleccionada" (change)="cargarAsistencias()" />
+        <input type="text" class="form-control border-end-0 input-busqueda"
+            style="border-top-left-radius: 2rem; border-bottom-left-radius: 2rem;" placeholder="Buscar por nombre..."
+            [(ngModel)]="nombreEmpleadoFiltro" (input)="cargarAsistencias()" />
+
+        <span class="input-group-text bg-white border-start-0 me-2"
+            style="border-top-right-radius: 2rem; border-bottom-right-radius: 2rem;">
+            <i class="bi bi-search"></i>
+        </span>
     </div>
+
+
 </div>
 
 <table class="table table-borderless text-center mt-5" style="color: #8a8a8a;">
@@ -34,8 +42,8 @@
             <td>{{ asistencia.marcacion }}</td>
             <td>{{ asistencia.tipo }}</td>
             <td>
-                <img [src]="asistencia.foto.startsWith('data:image') ? asistencia.foto : 'assets/icons/' + asistencia.foto" alt="Foto" width="60"
-                    height="70" />
+                <img [src]="asistencia.foto.startsWith('data:image') ? asistencia.foto : 'assets/icons/' + asistencia.foto"
+                    alt="Foto" width="60" height="70" />
             </td>
             <td>
                 <span class="badge p-2 rounded-5" [ngClass]="{
@@ -45,6 +53,12 @@
           }">
                     {{ asistencia.estado }}
                 </span>
+            </td>
+        </tr>
+        <!-- ✅ Mensaje cuando no hay resultados -->
+        <tr *ngIf="asistenciasFiltradas.length === 0">
+            <td colspan="6" class="text-center text-muted">
+                No se encontraron asistencias para el nombre ingresado.
             </td>
         </tr>
     </tbody>

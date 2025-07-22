@@ -6,7 +6,10 @@ export const navbarData:INavbarData[] = [
     {
         routeLink: 'panel-control',
         icon: 'fal fa-home',
-        label: 'Panel_de_control'
+        label: 'Panel_de_control',
+        rolesPermitidos: ['Administrador']
+
+        
     },
     {
         routeLink: 'asistencias',
@@ -16,22 +19,27 @@ export const navbarData:INavbarData[] = [
             {
                 routeLink:'asistencias/registro',
                 label:'Registro',
+                rolesPermitidos: ['Empleado']
             },
             {
                 routeLink:'asistencias/informe',
                 label:'Informe',
+                rolesPermitidos: ['Empleado']
             },
             {
                 routeLink:'asistencias/informe-general',
                 label:'Informe General',
+                rolesPermitidos: ['Administrador']
             },
             {
                 routeLink:'asistencias/justificaciones-generales',
                 label:'Justificaciones',
+                rolesPermitidos: ['Administrador']
             },
             {
                 routeLink:'asistencias/justificaciones',
                 label:'Justificaciones',
+                rolesPermitidos: ['Empleado']
             },
             
         ]
@@ -39,47 +47,57 @@ export const navbarData:INavbarData[] = [
     {
         routeLink: 'departamentos',
         icon: 'bi bi-building',
-        label: 'Departamentos'
+        label: 'Departamentos',
+        rolesPermitidos: ['Administrador']
     },
     {
         routeLink: 'cargos',
         icon: 'bi bi-briefcase-fill',
-        label: 'Cargos'
+        label: 'Cargos',
+        rolesPermitidos: ['Administrador']
     },
     {
         routeLink: 'roles',
         icon: 'bi bi-people-fill',
-        label: 'Roles'
+        label: 'Roles',
+        rolesPermitidos: ['Administrador']
     },
     {
         routeLink: 'permisos',
         icon: 'bi bi-key-fill',
-        label: 'Permisos'
+        label: 'Permisos',
+        rolesPermitidos: ['Administrador']
     },
     {
         routeLink: 'roles-permisos',
         icon: 'bi bi-shield-lock-fill',
         label: 'Roles_Permisos',
+        rolesPermitidos: ['Administrador']
     },
     {
         routeLink: 'horarios',
         icon: 'bi bi-calendar-check-fill',
-        label: 'Horarios'
+        label: 'Horarios',
+        rolesPermitidos: ['Administrador']
     },
     {
         routeLink: 'horarios-dias',
         icon: 'bi bi-calendar-day-fill',
         label: 'Horarios_dias',
+        rolesPermitidos: ['Administrador']
     },
     {
         routeLink: 'dias',
         icon: 'bi bi-calendar-event-fill',
-        label: 'Dias'
+        label: 'Dias',
+        rolesPermitidos: ['Administrador']
+
     },
     {
         routeLink: 'acceso',
         icon: 'bi bi-door-open-fill',
         label: 'Acceso',
+        rolesPermitidos: ['Administrador'],
         items: [
             {
                 routeLink:'acceso/empleados',
@@ -95,7 +113,8 @@ export const navbarData:INavbarData[] = [
     {
         routeLink: 'perfil',
         icon: '	bi bi-person-circle',
-        label: 'Perfil'
+        label: 'Perfil',
+        rolesPermitidos: ['Empleado']
     },
     
 ]

@@ -50,6 +50,24 @@ export class LoginComponent {
 
       localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioEncontrado));
 
+      // ✅ Traducción de id_rol a texto
+      let rolTexto = '';
+      switch (usuarioEncontrado.id_rol) {
+        case 1:
+          rolTexto = 'Administrador';
+          this.router.navigate(['/dashboard/panel-control']);
+          break;
+        case 2:
+          rolTexto = 'Empleado';
+          this.router.navigate(['/dashboard/asistencias/registro']);
+          break;
+        default:
+          rolTexto = 'desconocido';
+          break;
+      }
+
+      localStorage.setItem('rolUsuario', rolTexto);
+
       if (empleado) {
         const nombreCompleto = `${empleado.nombre} ${empleado.ape_p} ${empleado.ape_m}`;
         localStorage.setItem('nombreUsuario', nombreCompleto);
@@ -65,9 +83,13 @@ export class LoginComponent {
       }
 
       console.log('Login correcto. Redirigiendo...');
-      this.router.navigate(['/dashboard/cargos']);
+    } else {
+      alert('Usuario o contraseña incorrectos, o cuenta desactivada.');
     }
-
-
   }
+
+
+
+
+
 }

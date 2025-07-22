@@ -56,6 +56,12 @@ h5 {
     border: none;
 }
 
+.ancho-inactivo {
+  width: 40rem;
+  padding: 0.7rem;
+}
+
+
 .modal-simulacion {
     position: fixed;
     top: 0;

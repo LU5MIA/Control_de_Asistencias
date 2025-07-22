@@ -153,6 +153,17 @@ export class EmpleadosComponent {
       return;
     }
 
+    // Verificar si el correo ya está siendo usado por otro empleado
+    const correoExistente = this.empleadosService.empleado.some(e =>
+      e.correo.toLowerCase() === correo.toLowerCase() && e.id !== id
+    );
+
+    if (correoExistente) {
+      alert('El correo ya está registrado por otro empleado.');
+      return;
+    }
+
+    // Verificar si no hubo cambios
     if (
       this.EmpleadoOriginal &&
       JSON.stringify(this.EmpleadoOriginal) === JSON.stringify(this.empleado)
@@ -161,11 +172,11 @@ export class EmpleadosComponent {
       return;
     }
 
-    
-
+    // Actualizar
     this.empleadosService.actualizar({ ...this.empleado });
     this.cerrarFormulario();
   };
+
 
   activarEmpleado(empleado: Empleados): void {
     this.empleadosService.cambiarEstado(empleado.id, true);

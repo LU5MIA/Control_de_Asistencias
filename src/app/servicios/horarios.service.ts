@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Dias } from '../interfaces/dias';
 import { Horarios } from '../interfaces/horarios';
 
 @Injectable({
@@ -7,55 +6,85 @@ import { Horarios } from '../interfaces/horarios';
 })
 export class HorariosService {
 
-  private _nextid = 4;
-  private _horario: Horarios[] = [
-    {
-      id: 1,
-      turno: 'Mañana',
-      modalidad: 'Presencial',
-      hora_entrada: '08:00',
-      tolerancia: 10,
-      hora_salida: '12:00',
-      estado: true,
-    },
-    {
-      id: 2,
-      turno: 'Tarde',
-      modalidad: 'Virtual',
-      hora_entrada: '14:00',
-      tolerancia: 5,
-      hora_salida: '22:00',
-      estado: true,
-    },
-    {
-      id: 3,
-      turno: 'Noche',
-      modalidad: 'Presencial',
-      hora_entrada: '20:00',
-      tolerancia: 15,
-      hora_salida: '23:00',
-      estado: true,
-    },
-  ]
+  private _horario: Horarios[] = [];
+  private _nextid: number = 1;
 
-  //metodo para listar horarios
+  constructor() {
+    console.log("Servicio inicializado de horarios");
+    this.cargarHorarios();
+  }
 
+  // Cargar desde localStorage o usar datos por defecto
+  private cargarHorarios(): void {
+    const data = localStorage.getItem('horarios');
+    if (data) {
+      this._horario = JSON.parse(data);
+    } else {
+      this._horario = this.horariosPorDefecto();
+      this.guardarHorarios();
+    }
+
+    this._nextid = this._horario.length
+      ? Math.max(...this._horario.map(h => h.id)) + 1
+      : 1;
+  }
+
+  // Guardar en localStorage
+  private guardarHorarios(): void {
+    localStorage.setItem('horarios', JSON.stringify(this._horario));
+  }
+
+  // Datos por defecto
+  private horariosPorDefecto(): Horarios[] {
+    return [
+      {
+        id: 1,
+        turno: 'Mañana',
+        modalidad: 'Presencial',
+        hora_entrada: '08:00',
+        tolerancia: 10,
+        hora_salida: '12:00',
+        estado: true,
+      },
+      {
+        id: 2,
+        turno: 'Tarde',
+        modalidad: 'Virtual',
+        hora_entrada: '14:00',
+        tolerancia: 5,
+        hora_salida: '22:00',
+        estado: true,
+      },
+      {
+        id: 3,
+        turno: 'Noche',
+        modalidad: 'Presencial',
+        hora_entrada: '20:00',
+        tolerancia: 15,
+        hora_salida: '23:00',
+        estado: true,
+      },
+    ];
+  }
+
+  // Listar horarios
   get horario(): Horarios[] {
-    return [...this._horario]
+    return [...this._horario];
   }
 
-  //metodo para agregar horarios
-
-  add = (horario: Horarios) => {
-    horario.id = this._nextid++
-    this._horario.push(horario)
+  // Agregar nuevo horario
+  add = (horario: Horarios): void => {
+    horario.id = this._nextid++;
+    this._horario.push(horario);
+    this.guardarHorarios();
   }
 
-  // Actualizar un horario completo
+  // Actualizar un horario existente
   actualizar = (horarioActualizado: Horarios): void => {
     const index = this._horario.findIndex(h => h.id === horarioActualizado.id);
     if (index !== -1) {
       this._horario[index] = { ...horarioActualizado };
+      this.guardarHorarios();
     }
   }
 
@@ -64,14 +93,8 @@ export class HorariosService {
     const horario = this._horario.find(h => h.id === id);
     if (horario) {
       horario.estado = nuevoEstado;
+      this.guardarHorarios();
     }
-  }
-
-  constructor() {
-    console.log("Servicio inicializado de horarios");
-
-    // Guardar los horarios en localStorage al iniciar
-    localStorage.setItem('horarios', JSON.stringify(this._horario));
   }
 
 }

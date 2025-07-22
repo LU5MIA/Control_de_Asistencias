@@ -30,25 +30,25 @@
             <td>{{ a.marcacion }}</td>
             <td>{{ a.tipo }}</td>
             <td>
-                <img [src]="a.foto.startsWith('data:image') ? a.foto : 'assets/icons/' + a.foto" alt="Foto" width="60"
-                    height="70" />
+                <img [src]="a.foto.startsWith('data:image') ? a.foto : 'assets/icons/' + a.foto" alt="Foto" width="70"
+                    height="90" />
             </td>
             <td>
-                <span class="badge" [ngClass]="{
-                'bg-custom2 text-white': a.estado === 'Registrado',
+                <span class="badge p-2 rounded-5" [ngClass]="{
+                'bg-custom2': a.estado === 'Registrado',
                 'bg-custom3': a.estado === 'Tarde',
                 'bg-custom4': a.estado === 'Justificacion'
-              }" class="p-2 rounded-5">
+              }">
                     {{ a.estado }}
                 </span>
             </td>
         </tr>
-        <!-- <tr *ngIf="asistenciasFiltradas.length === 0">
+        <tr *ngIf="asistenciasFiltradas.length === 0">
             <td colspan="5" class="text-center text-muted">
                 No se encontraron registros de tipo
                 <strong>{{ tipoSeleccionado || 'Completas' }}</strong>
                 para la fecha seleccionada.
             </td>
-        </tr> -->
+        </tr>
     </tbody>
 </table>

@@ -6,49 +6,51 @@ import { Dias } from '../interfaces/dias';
 })
 export class DiasService {
 
-  private _dias: Dias[] = [
-    {
-      id: 1,
-      nombre: "Lunes",
-      estado: true,
-    },
-    {
-      id: 2,
-      nombre: "Martes",
-      estado: true,
-    },
-    {
-      id: 3,
-      nombre: "Miercoles",
-      estado: true,
-    },
-    {
-      id: 4,
-      nombre: "Jueves",
-      estado: true,
-    },
-    {
-      id: 5,
-      nombre: "Viernes",
-      estado: true,
-    }
-  ]
+  private _dias: Dias[] = [];
 
-  //metodo para listar dias
-
-  get dia(): Dias[] {
-    return [...this._dias]
+  constructor() {
+    console.log("Servicio de días Inicializado");
+    this.cargarDias();
   }
 
-  // Cambiar estado (activar o desactivar)
+  // Obtener copia de los días
+  get dia(): Dias[] {
+    return [...this._dias];
+  }
+
+  // Cargar desde localStorage o usar los valores por defecto
+  private cargarDias(): void {
+    const data = localStorage.getItem('dias');
+    if (data) {
+      this._dias = JSON.parse(data);
+    } else {
+      this._dias = this.diasPorDefecto();
+      this.guardarDias();
+    }
+  }
+
+  // Guardar en localStorage
+  private guardarDias(): void {
+    localStorage.setItem('dias', JSON.stringify(this._dias));
+  }
+
+  // Valores por defecto
+  private diasPorDefecto(): Dias[] {
+    return [
+      { id: 1, nombre: "Lunes", estado: true },
+      { id: 2, nombre: "Martes", estado: true },
+      { id: 3, nombre: "Miércoles", estado: true },
+      { id: 4, nombre: "Jueves", estado: true },
+      { id: 5, nombre: "Viernes", estado: true },
+    ];
+  }
+
+  // Cambiar estado (activar/desactivar un día)
   cambiarEstado = (id: number, nuevoEstado: boolean): void => {
     const dia = this._dias.find(d => d.id === id);
     if (dia) {
       dia.estado = nuevoEstado;
+      this.guardarDias();
     }
-  }
-
-  constructor() {
-    console.log("Servicio de dias Inicializado")
   }
 }

@@ -70,7 +70,7 @@
 </div>
 
 <div *ngIf="mostrarForm" class="modal-simulacion">
-  <div class="modal-simulacion-content">
+  <div class="modal-simulacion-content w-75 p-4 rounded-4" style="max-width: 700px;">
     <h5 class="mb-3 text-center rounded-4 border p-2" style="border-radius: 12px;">
       <i class="me-2" [ngClass]="editando ? 'bi bi-pencil-square' : 'bi bi-person-badge'">
       </i>
@@ -84,19 +84,19 @@
         <div class="col-md-6 mb-3">
           <label for="dni" class="form-label">DNI:</label>
           <input type="text" class="form-control" id="dni" name="dni" pattern="^[0-9]{8}$" maxlength="8"
-            [(ngModel)]="empleado.dni" required>
+            [(ngModel)]="empleado.dni" required [disabled]="editando">
         </div>
         <div class="col-md-6 mb-3">
           <label for="nombre" class="form-label">Nombre:</label>
-          <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="empleado.nombre" required>
+          <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="empleado.nombre" required [disabled]="editando">
         </div>
         <div class="col-md-6 mb-3">
           <label for="ape_p" class="form-label">Apellido Paterno:</label>
-          <input type="text" class="form-control" id="ape_p" name="ape_p" [(ngModel)]="empleado.ape_p" required>
+          <input type="text" class="form-control" id="ape_p" name="ape_p" [(ngModel)]="empleado.ape_p" required [disabled]="editando">
         </div>
         <div class="col-md-6 mb-3">
           <label for="ape_m" class="form-label">Apellido Materno:</label>
-          <input type="text" class="form-control" id="ape_m" name="ape_m" [(ngModel)]="empleado.ape_m" required>
+          <input type="text" class="form-control" id="ape_m" name="ape_m" [(ngModel)]="empleado.ape_m" required [disabled]="editando">
         </div>
       </div>
 

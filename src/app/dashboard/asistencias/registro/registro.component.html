@@ -27,9 +27,13 @@
         </div>
     </div>
 
-    <button type="submit" class="mt-4 bg-custom3 text-white rounded-5"
-        [disabled]="asistenciaCompletaHoy || !registroAbierto">
+    <button type="submit" class="mt-4 text-white rounded-5 px-3 py-2 border-0"
+        [disabled]="asistenciaCompletaHoy || !registroAbierto" [ngClass]="{
+    'bg-custom3': !asistenciaCompletaHoy && registroAbierto,
+    'bg-secondary ancho-inactivo': asistenciaCompletaHoy || !registroAbierto
+  }">
         Marcar Asistencia ✅
     </button>
+
 
 </form>

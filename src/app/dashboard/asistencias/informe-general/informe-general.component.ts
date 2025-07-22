@@ -16,12 +16,13 @@ export class InformeGeneralComponent implements OnInit {
   tipoSeleccionado: '' | 'Entrada' | 'Salida' | 'Completas' = 'Entrada';
   fechaSeleccionada: string = '';
   asistenciasFiltradas: Asistencia[] = [];
+  nombreEmpleadoFiltro: string = '';
 
   constructor(
     private asistenciaService: AsistenciaService,
     private empleadoService: EmpleadosService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.cargarAsistencias();
@@ -35,8 +36,8 @@ export class InformeGeneralComponent implements OnInit {
   }
 
   get empleados(): Empleados[] {
-      return this.empleadoService.empleado;
-    }
+    return this.empleadoService.empleado;
+  }
 
   getNombreEmpleado(id_empleado: number): string {
     const empleado = this.empleados.find(e => e.id === id_empleado);
@@ -44,9 +45,22 @@ export class InformeGeneralComponent implements OnInit {
   }
 
   cargarAsistencias() {
-    // Obtenemos todas las asistencias
-    let asistencias = this.asistenciaService.asistencias;
+    // 🔄 Obtener asistencias del servicio
+    const asistenciasServicio: Asistencia[] = this.asistenciaService.asistencias || [];
 
+    // 🔄 Obtener asistencias desde localStorage
+    const asistenciasLocalStorage: Asistencia[] = JSON.parse(localStorage.getItem('asistencias') || '[]');
+
+    // ✅ Unir ambas listas y eliminar duplicados (por id_asistencia)
+    const mapaUnico: { [id: number]: Asistencia } = {};
+
+    for (const asistencia of [...asistenciasServicio, ...asistenciasLocalStorage]) {
+      mapaUnico[asistencia.id_asistencia] = asistencia;
+    }
+
+    let asistencias: Asistencia[] = Object.values(mapaUnico);
+
+    // ✅ Filtrar por tipo: "Completas" = Entrada y Salida el mismo día
     if (!this.tipoSeleccionado || this.tipoSeleccionado === 'Completas') {
       const asistenciasPorFechaEmpleado: {
         [clave: string]: { entrada?: Asistencia; salida?: Asistencia };
@@ -73,17 +87,20 @@ export class InformeGeneralComponent implements OnInit {
         .filter(dia => dia.entrada && dia.salida)
         .flatMap(dia => [dia.entrada!, dia.salida!]);
     } else {
+      // ✅ Filtrar por tipo Entrada o Salida
       asistencias = asistencias.filter(a => a.tipo === this.tipoSeleccionado);
     }
 
-    
-
-    if (this.fechaSeleccionada) {
+    // ✅ Filtrar por nombre del empleado
+    if (this.nombreEmpleadoFiltro.trim()) {
+      const filtro = this.nombreEmpleadoFiltro.trim().toLowerCase();
       asistencias = asistencias.filter(a =>
-        a.marcacion.startsWith(this.fechaSeleccionada)
+        this.getNombreEmpleado(a.id_empleado).toLowerCase().includes(filtro)
       );
     }
 
+    // ✅ Asignar al arreglo final
     this.asistenciasFiltradas = asistencias;
   }
+
 }

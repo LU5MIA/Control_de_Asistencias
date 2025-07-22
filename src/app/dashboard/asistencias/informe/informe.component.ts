@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Asistencia } from '../../../interfaces/asistencia';
 import { AsistenciaService } from '../../../servicios/asistencia.service';
 import { NavigationEnd, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { filter } from 'rxjs/operators';
   templateUrl: './informe.component.html',
   styleUrl: './informe.component.css'
 })
-export class InformeComponent {
+export class InformeComponent implements OnInit {
   tipoSeleccionado: '' | 'Entrada' | 'Salida' | 'Completas' = 'Entrada';
   fechaSeleccionada: string = '';
   asistenciasFiltradas: Asistencia[] = [];
@@ -36,24 +36,45 @@ export class InformeComponent {
       const empleado = JSON.parse(empleadoStr);
       const idEmpleado = empleado.id;
 
-      this.asistenciasEmpleado = this.asistenciaService.asistencias.filter(
-        asistencia => asistencia.id_empleado === idEmpleado
+      const asistencias = JSON.parse(localStorage.getItem('asistencias') || '[]');
+      this.asistenciasEmpleado = asistencias.filter(
+        (asistencia: any) => asistencia.id_empleado === idEmpleado
       );
     }
 
     this.filtrarAsistencias();
   }
 
+
   filtrarAsistencias() {
     let filtradas: Asistencia[] = this.asistenciasEmpleado;
 
-    if (!this.tipoSeleccionado || this.tipoSeleccionado === 'Completas') {
+    // Filtrar por fecha seleccionada
+    if (this.fechaSeleccionada) {
+      filtradas = filtradas.filter(a => {
+        if (!a.marcacion) return false;
+
+        // Extraer la parte de la fecha de a.marcacion (dd/MM/yyyy)
+        const fechaMarcacion = a.marcacion.split(' ')[0]; // "21/07/2025"
+
+        // Convertir this.fechaSeleccionada (YYYY-MM-DD) a dd/MM/yyyy
+        const fechaSeleccionadaParts = this.fechaSeleccionada.split('-'); // ["YYYY", "MM", "DD"]
+        const fechaSeleccionadaFormatted = `${fechaSeleccionadaParts[2]}/${fechaSeleccionadaParts[1]}/${fechaSeleccionadaParts[0]}`; // dd/MM/yyyy
+
+        return fechaMarcacion === fechaSeleccionadaFormatted;
+      });
+    }
+
+    // Filtrar por tipo
+    if (!this.tipoSeleccionado) {
       const asistenciasPorFecha: {
         [fecha: string]: { entrada?: Asistencia; salida?: Asistencia };
       } = {};
 
       for (const a of filtradas) {
-        const fecha = a.marcacion.substring(0, 10);
+        if (!a.marcacion) continue;
+        // Usar la fecha original (dd/MM/yyyy) para agrupar
+        const fecha = a.marcacion.split(' ')[0]; // "21/07/2025"
         if (!asistenciasPorFecha[fecha]) {
           asistenciasPorFecha[fecha] = {};
         }
@@ -74,17 +95,12 @@ export class InformeComponent {
       filtradas = filtradas.filter(a => a.tipo === this.tipoSeleccionado);
     }
 
-    if (this.fechaSeleccionada) {
-      filtradas = filtradas.filter(a =>
-        a.marcacion.startsWith(this.fechaSeleccionada)
-      );
-    }
-
     this.asistenciasFiltradas = filtradas;
+
+    // Depuración
+    console.log('Fecha seleccionada (dd/MM/yyyy):', this.fechaSeleccionada ?
+      `${this.fechaSeleccionada.split('-')[2]}/${this.fechaSeleccionada.split('-')[1]}/${this.fechaSeleccionada.split('-')[0]}` : null);
+    console.log('Asistencias filtradas:', filtradas);
   }
-
-
-
-
 
 }

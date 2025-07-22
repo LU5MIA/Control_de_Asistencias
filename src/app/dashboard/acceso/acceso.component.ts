@@ -1,3 +1,4 @@
+import emailjs from 'emailjs-com';
 import { Component } from '@angular/core';
 import { UsuariosService } from '../../servicios/usuarios.service';
 import { Usuarios } from '../../interfaces/usuarios';
@@ -81,6 +82,65 @@ export class AccesoComponent {
     this.mostrarForm = false;
     this.editando = false;
   };
+
+  generarYEnviarContrasena(empleado: Empleados, nuevaPassword: string) {
+    console.log('Empleado:', empleado);
+    console.log('Correo del empleado:', empleado.correo);
+
+    const templateParams = {
+      to_name: empleado.nombre,
+      email: empleado.correo,
+      nueva_contrasena: nuevaPassword
+    };
+
+    emailjs.send(
+      'service_hc7o43u',
+      'template_4iv4j0k',
+      templateParams,
+      'ok7qaSIMrnHjjg8y0'
+    ).then((response) => {
+      console.log('Correo enviado con éxito', response.status, response.text);
+      alert('Se envió la contraseña al correo del empleado.');
+    }, (err) => {
+      console.error('Fallo al enviar correo', err);
+      alert('Error al enviar el correo.');
+    });
+  }
+
+  generarPasswordAleatoria(longitud: number): string {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let resultado = '';
+    for (let i = 0; i < longitud; i++) {
+      resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return resultado;
+  }
+
+  restablecerPassword(usuario: Usuarios) {
+    const empleado = this.empleadoService.empleado.find(e => e.id === usuario.id_empleado);
+
+    if (!empleado) {
+      alert('Empleado no encontrado.');
+      return;
+    }
+
+    if (!empleado.correo) {
+      alert('Este empleado no tiene un correo registrado.');
+      return;
+    }
+
+    const nuevaPassword = this.generarPasswordAleatoria(10);
+
+    // Actualiza el usuario con nueva password
+    usuario.password = nuevaPassword;
+    this.usuarioService.actualizar(usuario); // ← asegúrate de que exista
+
+    this.generarYEnviarContrasena(empleado, nuevaPassword);
+  }
+
+
+
+
 
   add = () => {
     const usuarioNuevo: Usuarios = {

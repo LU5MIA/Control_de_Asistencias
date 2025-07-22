@@ -7,11 +7,11 @@
 <form>
     <h5 class="mb-4 ms-2">Foto <i class="bi bi-image ms-2"></i></h5>
 
-    <div class="bg-custom2 rounded-4 text-center ms-5" style="width: 15rem; padding: 3rem;">
-        <div class="mb-3">
-            <img *ngIf="fotoBase64" [src]="fotoBase64" class="img-thumbnail rounded-circle" width="120" height="120">
+    <div [ngClass]="{ 'bg-custom2': !fotoBase64 }" class="bg-custom2 rounded-4 text-center ms-5" style="width: 15rem; padding: 3rem;">
+        <div>
+            <img *ngIf="fotoBase64" [src]="fotoBase64" class="rounded-3" width="130" height="180">
 
-            <div *ngIf="!fotoBase64" class="text-muted" style="font-size: 12px;">
+            <div *ngIf="!fotoBase64" class="text-muted mb-2" style="font-size: 12px;">
                 Sin foto
             </div>
         </div>
@@ -26,7 +26,7 @@
     </div>
 
 
-    <div class="mt-4" style="max-width: 700px;">
+    <div class="mt-5" style="max-width: 350px;">
         <div class="d-flex align-items-center mb-3">
             <label style="width: 150px;" class="me-5">Nombre usuario:</label>
             <input type="text" [value]="usuarioLogueado?.nombre_usuario" disabled>
